@@ -56,6 +56,30 @@
         updateBannerVisibility();
       }
 
+      function DownloadFile(filename, base64Data) {
+    // Convert the Base64 string back to binary data.
+    const binaryData = atob(base64Data);
+    const arrayBuffer = new ArrayBuffer(binaryData.length);
+    const uint8Array = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < binaryData.length; i++) {
+        uint8Array[i] = binaryData.charCodeAt(i);
+    }
+
+    // Create a Blob from the binary data.
+    const blob = new Blob([uint8Array], { type: "image/png" });
+
+    // Create a link element to trigger the download.
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    link.style.display = "none";
+    document.body.appendChild(link);
+
+    // Trigger the download and remove the link.
+    link.click();
+    document.body.removeChild(link);
+}
+
       var buildUrl = "Build";
       var loaderUrl = buildUrl + "/Diagramme.loader.js";
       var config = {
